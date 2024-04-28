@@ -8,24 +8,26 @@ import cookieParser from "cookie-parser";
 
 const app = express();
 
-const whitelist = [
-  "http://localhost:5173",
-  "http://192.168.29.4:5173",
-  undefined,
-];
-app.use(
-  cors({
-    origin: function (origin, cb) {
-      // console.log("CORS :", origin);
-      if (whitelist.includes(origin as string)) {
-        cb(null, true);
-      } else {
-        cb(new Error("Not allowed by CORS"));
-      }
-    },
-    credentials: true,
-  })
-);
+// const whitelist = [
+//   "http://localhost:5173",
+//   "http://192.168.29.4:5173",
+//   undefined,
+// ];
+// app.use(
+//   cors({
+//     origin: function (origin, cb) {
+//       // console.log("CORS :", origin);
+//       if (whitelist.includes(origin as string)) {
+//         cb(null, true);
+//       } else {
+//         cb(new Error("Not allowed by CORS"));
+//       }
+//     },
+//     credentials: true,
+//   })
+// );
+
+app.use(cors());
 
 if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));
