@@ -43,6 +43,7 @@ const createSendJWT = function (
     res.cookie("jwt", token, {
       expires: new Date(Date.now() + 24 * 60 * 60 * 1000 * COOKIE_EXPIRY),
       httpOnly: true,
+      sameSite: "none",
       // secure: true,
     });
 
