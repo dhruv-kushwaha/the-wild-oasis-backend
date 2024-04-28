@@ -1,0 +1,94 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum BookingStatus {
+  checkedOut
+  unconfirmed
+  checkedIn
+}
+
+
+model Booking{
+  id Int @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  startDate DateTime
+  endDate DateTime
+  numNights Int
+  numGuests Int
+  cabinPrice Float
+  extrasPrice Float
+  totalPrice Float
+  status BookingStatus
+  hasBreakfast Boolean
+  isPaid Boolean
+  observations String?
+  cabinId Int
+  guestId Int
+
+  cabin Cabin @relation(fields: [cabinId], references: [id])
+  guest Guest @relation(fields: [guestId], references: [id])
+
+}
+
+
+
+
+model Cabin {
+  id Int @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  name String @unique
+  maxCapacity Int
+  regularPrice Float
+  discount Float
+  description String?
+  image String?
+
+  bookings Booking[]
+}
+
+model Guest{
+  id Int @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  fullName String
+  email String
+  nationalID String
+  nationality String
+  countryFlag String?
+
+  bookings Booking[]
+
+}
+
+model Setting {
+  id Int @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  minBookingLength Int
+  maxBookingLength Int 
+  maxGuestsPerBooking Int
+  breakfastPrice Float
+}
+
+enum UserRoles{
+  admin
+  receptionist
+  manager
+}
+
+model User{
+  id Int @id @default(autoincrement())
+  name String
+  email String @unique
+  password String
+  createdAt DateTime @default(now())
+  role UserRoles @default(receptionist)
+  avatar String?
+}
