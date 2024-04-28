@@ -44,7 +44,7 @@ const createSendJWT = function (
       expires: new Date(Date.now() + 24 * 60 * 60 * 1000 * COOKIE_EXPIRY),
       httpOnly: true,
       sameSite: "none",
-      // secure: true,
+      secure: true,
     });
 
   res.status(statusCode).json({
